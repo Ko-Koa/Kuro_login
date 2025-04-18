@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# model chache and tmp pictures
+cache/
+static/pictures/*
+static/tmp/*
