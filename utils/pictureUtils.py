@@ -19,7 +19,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model, x, preprocess = open_clip.create_model_and_transforms(
     "ViT-B-16-plus-240",
     pretrained="laion400m_e32",
-    cache_dir=os.path.join(PROJECT_PATH, "cache"),
+    cache_dir=str(PROJECT_PATH.joinpath("cache")),
 )
 model.to(device)
 
@@ -28,7 +28,6 @@ model.to(device)
 def qweada(oriPath, dstPath):
     try:
         img2 = cv2.imdecode(np.fromfile(oriPath, dtype=np.uint8), -1)
-
         b, g, r, a = cv2.split(img2)
         aa = a[:, :, np.newaxis]
         new = np.concatenate((aa, aa, aa), axis=2)
@@ -49,9 +48,9 @@ def clean_background():
     可能有的时候没有背景图片
     """
     try:
-        backgroundList = os.listdir(TMP_BACKGROUND_PATH)
+        backgroundList = os.listdir(str(TMP_BACKGROUND_PATH))
         for background in backgroundList:
-            backgroundPath = os.path.join(TMP_BACKGROUND_PATH, background)
+            backgroundPath = os.path.join(str(TMP_BACKGROUND_PATH), background)
             os.remove(backgroundPath)
     except:
         pass
@@ -61,26 +60,25 @@ def process_picture():
     clean_background()
     # 处理题目图片
     for i in range(3):
-        oriPath = os.path.join(PICTURE_PATH, f"que_{i}.png")
-        dstPath = os.path.join(TMP_PATH, f"que_{i}.png")
-        pathUtils.mk_dir(dstPath)
-        qweada(oriPath, dstPath)
+        oriPath = PICTURE_PATH.joinpath(f"que_{i}.png")
+        dstPath = TMP_PATH.joinpath(f"que_{i}.png")
+        pathUtils.mk_dir(str(dstPath))
+        qweada(str(oriPath), str(dstPath))
 
     # 切割图片
     det = ddddocr.DdddOcr(det=True, ocr=False, show_ad=False)
-    target_path = os.path.join(PICTURE_PATH, f"target.png")
-
-    with open(target_path, "rb") as f:
+    target_path = PICTURE_PATH.joinpath("target.png")
+    with open(str(target_path), "rb") as f:
         image = f.read()
 
     bboxes = det.detection(image)
     target_img = Image.open(target_path)
     for bbox in bboxes:
-        bboxDstPath = os.path.join(
-            TMP_PATH, "background", f"{'_'.join([str(i) for i in bbox])}.png"
+        bboxDstPath = TMP_PATH.joinpath("background").joinpath(
+            f"{'_'.join([str(i) for i in bbox])}.png"
         )
-        pathUtils.mk_dir(bboxDstPath)
-        cut_image(target_img, bbox, bboxDstPath)
+        pathUtils.mk_dir(str(bboxDstPath))
+        cut_image(target_img, bbox, str(bboxDstPath))
 
 
 def imageEncoder(img):
@@ -103,11 +101,11 @@ def generateScore(image1, image2):
 
 def cal_score(quePath):
     logger.debug("Start calculate")
-    backgroundList = os.listdir(TMP_BACKGROUND_PATH)
+    backgroundList = os.listdir(str(TMP_BACKGROUND_PATH))
     items = []
     for background in backgroundList:
-        backgroundPath = os.path.join(TMP_BACKGROUND_PATH, background)
-        score = generateScore(quePath, backgroundPath)
+        backgroundPath = TMP_BACKGROUND_PATH.joinpath(background)
+        score = generateScore(quePath, str(backgroundPath))
         item = {"corrd": background.replace(".png", "").split("_"), "score": score}
         logger.debug(item)
         items.append(item)
@@ -129,7 +127,7 @@ def random_select_point(corrd):
 
 def get_points():
     return [
-        random_select_point(cal_score(os.path.join(TMP_PATH, "que_0.png"))),
-        random_select_point(cal_score(os.path.join(TMP_PATH, "que_1.png"))),
-        random_select_point(cal_score(os.path.join(TMP_PATH, "que_2.png"))),
+        random_select_point(cal_score(str(TMP_PATH.joinpath("que_0.png")))),
+        random_select_point(cal_score(str(TMP_PATH.joinpath("que_1.png")))),
+        random_select_point(cal_score(str(TMP_PATH.joinpath("que_2.png")))),
     ]
