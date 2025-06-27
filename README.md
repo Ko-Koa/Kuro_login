@@ -44,34 +44,22 @@ pip install -r requirements_slice.txt
 ### 方法一：使用 `sms_send.py` 获取 Token（图标点选验证码）
 > **来源**: [@Ko-Koa](https://github.com/Ko-Koa)
 
-**适用场景**：当遇到图标点选验证码时使用
-
 1. 确保已安装完整版依赖：`pip install -r requirements.txt`
 2. 运行 `sms_send.py`
 3. 输入你的手机号，获取验证码
-4. 输入验证码，脚本会返回你的 `token` 和其他相关信息
+4. 输入验证码，脚本会返回你的 `token` 和其他相关信息,并写入当前目录下的`login_data.json`文件中
 
-#### 依赖说明
-- **NodeJS**: 用于执行JavaScript加密算法
-  - 国内: <https://nodejs.cn/download/>
-  - 官网: [Node.js — Download Node.js® (nodejs.org)](https://nodejs.org/en/download/package-manager)
-- **Python环境**: 需要安装完整版依赖 `requirements.txt`
+**图标点选的图片处理部分代码来自** [Bump-mann/simple_ocr: 一个简单的识别验证码的代码](https://github.com/Bump-mann/simple_ocr)
 
-**图片处理部分代码来自** [Bump-mann/simple_ocr: 一个简单的识别验证码的代码](https://github.com/Bump-mann/simple_ocr)
+> [!WARNING]
+>
+> 1.由于目前库街区已换回滑块验证,关于图标点选验证仅使用极验官网的Demo进行测试,并不能保证使用
+>
+> 且识别点选的模型是用网络上的模型,并不保证识别率
+>
+> 2.由于`ddddocr`模块目前并不支持3.13以上版本,安装环境时注意`python`版本控制在`3.13`以下
 
-### 方法二：使用 `slice/tools.py` 获取 Token（滑块验证码）
-> **来源**: [@Ko-Koa](https://github.com/Ko-Koa)
-> **适用场景**：当遇到滑块验证码时使用
-
-1. 确保已安装依赖：`pip install -r requirements_slice.txt`
-2. 进入slice目录：`cd slice`
-3. 运行 `python tools.py`
-4. 输入你的手机号，获取验证码
-5. 输入验证码，脚本会返回你的 `token` 和其他相关信息
-
-
-
-### 方法三：使用 `login.py` 获取 Token（手动获取验证码）
+### 方法二：使用 `login.py` 获取 Token（手动获取验证码）
 > **来源**: [@2314933036](https://github.com/2314933036)
 
 **注意**：可能会失效
@@ -87,5 +75,4 @@ pip install -r requirements_slice.txt
 1. **iOS 用户**：可以下载抓包软件（如 Stream、Reqable 等）进行抓包
 2. **Android 用户**：请自行研究抓包方法
 3. **抓包目标**：获取登录请求中的 `token` 和其他相关信息
-
 
