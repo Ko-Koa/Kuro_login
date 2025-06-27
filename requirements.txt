@@ -4,7 +4,7 @@
 # 核心依赖
 requests>=2.32.0
 loguru>=0.7.0
-PyExecJS>=1.5.0
+pycryptodome>=3.20.0
 
 # 图像处理和计算机视觉
 opencv-python>=4.8.0
