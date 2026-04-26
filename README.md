@@ -70,6 +70,20 @@ pip install -r requirements_slice.txt
 4. 运行 `login.py`，输入手机号和验证码
 5. 脚本会返回你的 `token` 和其他相关信息
 
+### 方法三：从应用备份中提取 Token（Android）
+> **来源**: [Issue #5](https://github.com/mxyooR/Kuro_login/issues/5)
+
+1. 在手机上登录库街区 App
+2. 使用系统或第三方备份功能，备份已登录的库街区 App 数据
+3. 如有需要，将备份文件传到电脑后，用压缩工具打开备份包
+4. 在备份包中定位 `库街区(com.kurogame.kjq).bak/apps/com.kurogame.kjq/f/mmkv/user_data`
+5. 打开 `user_data`，提取其中的 `token` 字段
+6. 如果不方便直接定位路径，也可以先解压备份，再全局搜索 `eyJhbGciOiJIUzI1NiJ9` 快速查找 token
+
+> [!NOTE]
+>
+> 该方法来自社区反馈，Issue 中的测试环境为小米 K70 和当时的最新系统版本。不同品牌、系统版本或备份工具的目录结构可能略有差异，请以实际备份内容为准。
+
 ### 方法四：自行抓包
 
 1. **iOS 用户**：可以下载抓包软件（如 Stream、Reqable 等）进行抓包
