@@ -1,10 +1,13 @@
-import requests
 import uuid
+
+import requests
 
 """
 在https://www.kurobbs.com/mc/home/获取你的登录验证码
 """
-def get_token(devcode,distinct_id, mobile, code):
+
+
+def get_token(devcode, distinct_id, mobile, code):
     url = 'https://api.kurobbs.com/user/sdkLogin'
     headers = {
         'osversion': 'Android',
@@ -45,11 +48,12 @@ def get_token(devcode,distinct_id, mobile, code):
     except Exception as error:
         print(f'fetch error: {error}')
 
+
 if __name__ == "__main__":
     # 用户信息
     devcode = uuid.uuid4().hex
     distinct_id = uuid.uuid4().hex
     mobile = input('请输入你的手机号：')
     code = input('请输入你的验证码：')
-    
+
     get_token(devcode, distinct_id, mobile, code)
